@@ -1,0 +1,42 @@
+name: table
+
+table:
+  height: 75
+  width: 120
+  depth: 60
+
+components:
+  - name: frontLeftLeg
+    type: leg
+    dimensions:
+      height: "!{table.height - 30}"
+      width: 6
+      depth: 6
+
+  - name: frontRightLeg
+    type: leg
+    dimensions:
+      height: "!{table.height - 30}"
+      width: 6
+      depth: 6
+
+  - name: backLeftLeg
+    type: leg
+    dimensions:
+      height: "!{table.height - 30}"
+      width: 6
+      depth: 6
+
+  - name: backRightLeg
+    type: leg
+    dimensions:
+      height: "!{table.height - 30}"
+      width: 6
+      depth: 6
+
+  - name: top
+    type: top
+    dimensions:
+      height: 3
+      width: "!{table.width}"
+      depth: "!{table.depth}"
