@@ -1,9 +1,9 @@
 import yaml
 from expression import ExpressionEvaluator
-from job import Job
-from product import Product
-from component import Component
-from workshop import Workshop
+#from job import Job
+#from product import Product
+#from component import Component
+from workshop import Workshop, Job, Product, Component
 
 class Loader:
     def load(self, filename):
