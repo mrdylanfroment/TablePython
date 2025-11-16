@@ -1,40 +1,38 @@
-class Workshop:
-    def __init__(self):
-        self.jobs = []
-
-    def add_job(self, job):
-        self.jobs.append(job)
-
-class Job:
-    def __init__(self, job_id, description="", parameters=None):
-        self.id = job_id
-        self.description = description
-        self.parameters = parameters or {}
-        self.products = []  # list of Product objects
-
-    def add_product(self, product):
-        self.products.append(product)
-
-class Product:
-    def __init__(self, name, description=""):
-        self.name = name
-        self.description = description
-        self.components = []  # list of Component objects
-
-    # You can skip add_component and just append directly:
-    # product.components.append(component)
-
-
-    def __repr__(self):
-        return f"<Product {self.name}>"
+# workshop.py
 
 class Component:
-    def __init__(self, name, ctype, dimensions, transform=None):
+    def __init__(self, name, dimensions=None, position=None, rotation=None):
         self.name = name
-        self.type = ctype
-        self.dimensions = dimensions
-        self.transform = transform or {"translate": {"x": 0, "y": 0, "z": 0}}
-
+        self.dimensions = dimensions or {}
+        self.position = position or {"x": 0, "y": 0, "z": 0}
+        self.rotation = rotation or {"x": 0, "y": 0, "z": 0}
 
     def __repr__(self):
-        return f"<Component {self.name}: {self.type}, dims={self.dimensions}, pos={self.transform}>"
+        return (
+            f"<Component {self.name} dims={self.dimensions} "
+            f"pos={self.position} rot={self.rotation}>"
+        )
+
+
+class Product:
+    def __init__(self, name):
+        self.name = name
+        self.components = {}
+
+    def add_component(self, component):
+        self.components[component.name] = component
+
+    def __repr__(self):
+        return f"<Product {self.name} with {len(self.components)} components>"
+
+
+class Job:
+    def __init__(self, name):
+        self.name = name
+        self.products = {}
+
+    def add_product(self, product):
+        self.products[product.name] = product
+
+    def __repr__(self):
+        return f"<Job {self.name} with {len(self.products)} products>"

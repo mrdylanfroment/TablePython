@@ -1,47 +1,38 @@
+# loader.py
 import yaml
-from expression import ExpressionEvaluator
-#from job import Job
-#from product import Product
-#from component import Component
-from workshop import Workshop, Job, Product, Component
+from workshop import Job, Product, Component
+from expressions import ExpressionEvaluator
 
 class Loader:
-    def load(self, filename):
-        with open(filename, "r") as f:
+    def load(self, filepath):
+        with open(filepath, "r") as f:
             data = yaml.safe_load(f)
 
-        # Create the workshop
-        workshop = Workshop()
-
-        # Root context for expression evaluation
-        context = data
+        # Build global context for expressions
+        context = {k: v for k, v in data.items() if k not in ("products", "name")}
         evaluator = ExpressionEvaluator(context)
 
-        # Create a Job
-        job = Job(job_id=data.get("name", "job1"), description=data.get("description", ""))
+        # Create Job
+        job = Job(name=data.get("name", "Unnamed Job"))
 
-        # Create a Product
-        product = Product(name=data.get("name", "table"), description=data.get("description", ""))
+        # Load products
+        for prod_name, prod_data in data.get("products", {}).items():
+            product = Product(prod_name)
 
-        # Create Components from YAML
-        for comp_data in data.get("components", []):
-            # Resolve dimensions and transforms
-            dims = evaluator.resolve_dict(comp_data.get("dimensions", {}))
-            trans = evaluator.resolve_dict(comp_data.get("transform", {}))
+            for comp_name, comp_data in prod_data.get("components", {}).items():
+                dimensions = evaluator.resolve_dict(comp_data.get("dimensions", {}))
+                position = evaluator.resolve_dict(comp_data.get("position", {}))
+                rotation = evaluator.resolve_dict(comp_data.get("rotation", {}))
 
-            component = Component(
-                name=comp_data["name"],
-                ctype=comp_data["type"],
-                dimensions=dims,
-                transform=trans
-            )
-            # Add to product
-            product.components.append(component)
+                component = Component(
+                    name=comp_name,
+                    dimensions=dimensions,
+                    position=position,
+                    rotation=rotation
+                )
 
-        # Add product to job
-        job.products.append(product)
+                product.add_component(component)
 
-        # Add job to workshop
-        workshop.jobs.append(job)
+            job.add_product(product)
 
-        return workshop
+        return job
