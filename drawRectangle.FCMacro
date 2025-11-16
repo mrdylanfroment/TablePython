@@ -1,0 +1,67 @@
+import FreeCAD as App
+import FreeCADGui as Gui
+import Sketcher
+import Part
+
+# Get the active document or create a new one
+doc = App.ActiveDocument
+if doc is None:
+    doc = App.newDocument("RectanglePad")
+
+# Create a new Body in PartDesign
+body = doc.addObject('PartDesign::Body', 'Body')
+
+# Create a sketch on the XY plane
+sketch = doc.addObject('Sketcher::SketchObject', 'Sketch')
+body.addObject(sketch)
+sketch.MapMode = 'FlatFace'
+
+# Draw a 50x50mm rectangle centered on the origin using addRectangle
+# This is simpler and avoids constraint conflicts
+sketch.addGeometry([
+    Part.LineSegment(App.Vector(-25, -25, 0), App.Vector(25, -25, 0)),
+    Part.LineSegment(App.Vector(25, -25, 0), App.Vector(25, 25, 0)),
+    Part.LineSegment(App.Vector(25, 25, 0), App.Vector(-25, 25, 0)),
+    Part.LineSegment(App.Vector(-25, 25, 0), App.Vector(-25, -25, 0))
+], False)
+
+# Add coincident constraints to close the rectangle
+sketch.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+sketch.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+sketch.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+sketch.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+
+# Make horizontal and vertical
+sketch.addConstraint(Sketcher.Constraint('Horizontal', 0))
+sketch.addConstraint(Sketcher.Constraint('Vertical', 1))
+sketch.addConstraint(Sketcher.Constraint('Horizontal', 2))
+sketch.addConstraint(Sketcher.Constraint('Vertical', 3))
+
+# Set dimensions: 50mm x 50mm
+sketch.addConstraint(Sketcher.Constraint('Distance', 0, 50))
+sketch.addConstraint(Sketcher.Constraint('Distance', 1, 50))
+
+# Center on origin by constraining one corner
+sketch.addConstraint(Sketcher.Constraint('DistanceX', 0, 1, -25))
+sketch.addConstraint(Sketcher.Constraint('DistanceY', 0, 1, -25))
+
+# Recompute to apply constraints
+doc.recompute()
+
+# Create a pad feature - 800mm symmetric (400mm each direction from sketch plane)
+pad = doc.addObject("PartDesign::Pad", "Pad")
+body.addObject(pad)
+pad.Profile = sketch
+pad.Length = 800
+pad.Type = 0  # 1 = Symmetric to Plane
+pad.Midplane = 1  # This enables symmetric padding
+
+# Recompute the document
+doc.recompute()
+
+# Fit the view to show the entire object
+Gui.SendMsgToActiveView("ViewFit")
+
+print("Rectangle pad created successfully!")
+print("- 50x50mm rectangle centered on origin")
+print("- Padded 800mm symmetric (400mm each direction)")
