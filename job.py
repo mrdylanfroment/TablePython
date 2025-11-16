@@ -1,12 +1,9 @@
 class Job:
-    def __init__(self, name):
-        self.name = name
-        self.components = []
+    def __init__(self, job_id, description="", parameters=None):
+        self.id = job_id
+        self.description = description
+        self.parameters = parameters or {}
+        self.products = []  # list of Product objects
 
-    def add_component(self, comp):
-        self.components.append(comp)
-
-    def summary(self):
-        print(f"Job: {self.name}")
-        for c in self.components:
-            print(f"  {c.name}: {c.dimensions}")
+    def add_product(self, product):
+        self.products.append(product)

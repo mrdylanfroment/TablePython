@@ -1,8 +1,14 @@
 from loader import Loader
-from workshop import Workshop
 
 loader = Loader()
-job = loader.load("table.yaml")
+workshop = loader.load("table.yaml")
 
-ws = Workshop()
-ws.load_job(job)
+# Loop through all jobs, products, and components
+for job in workshop.jobs:
+    print(f"Job: {job.id}")
+    for product in job.products:
+        print(f"  Product: {product.name}")
+        for component in product.components:
+            print(f"    Component: {component.name}")
+            print(f"      Dimensions: {component.dimensions}")
+            print(f"      Transform: {component.transform}")

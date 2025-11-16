@@ -1,6 +1,6 @@
-from job import Job
-
 class Workshop:
-    def load_job(self, job: Job):
-        print("Workshop received job:")
-        job.summary()
+    def __init__(self):
+        self.jobs = []
+
+    def add_job(self, job):
+        self.jobs.append(job)

@@ -12,6 +12,11 @@ components:
       height: "!{table.height - 30}"
       width: 6
       depth: 6
+    transform:
+      translate:
+        x: 0
+        y: 0
+        z: 0
 
   - name: frontRightLeg
     type: leg
@@ -19,6 +24,11 @@ components:
       height: "!{table.height - 30}"
       width: 6
       depth: 6
+    transform:
+      translate:
+        x: "!{table.width - 6}"
+        y: 0
+        z: 0
 
   - name: backLeftLeg
     type: leg
@@ -26,6 +36,11 @@ components:
       height: "!{table.height - 30}"
       width: 6
       depth: 6
+    transform:
+      translate:
+        x: 0
+        y: "!{table.depth - 6}"
+        z: 0
 
   - name: backRightLeg
     type: leg
@@ -33,10 +48,20 @@ components:
       height: "!{table.height - 30}"
       width: 6
       depth: 6
+    transform:
+      translate:
+        x: "!{table.width - 6}"
+        y: "!{table.depth - 6}"
+        z: 0
 
-  - name: top
+  - name: tabletop
     type: top
     dimensions:
       height: 3
       width: "!{table.width}"
       depth: "!{table.depth}"
+    transform:
+      translate:
+        x: 0
+        y: 0
+        z: "!{table.height - 3}"
