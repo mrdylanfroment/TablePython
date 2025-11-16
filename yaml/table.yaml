@@ -1,0 +1,82 @@
+name: table_job
+
+products:
+  table:
+    components:
+
+      legFL:
+        dimensions:
+          height: "!{table['height'] - table['topThick']}"
+          width: "!{table['legThick']}"
+          depth: "!{table['legThick']}"
+        position:
+          x: "!{table['legThick']/2}"
+          y: "!{table['legThick']/2}"
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+
+      legFR:
+        dimensions:
+          height: "!{table['height'] - table['topThick']}"
+          width: "!{table['legThick']}"
+          depth: "!{table['legThick']}"
+        position:
+          x: "!{table['width']-table['legThick']/2}"
+          y: "!{table['legThick']/2}"
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+
+      legBL:
+        dimensions:
+          height: "!{table['height'] - table['topThick']}"
+          width: "!{table['legThick']}"
+          depth: "!{table['legThick']}"
+        position:
+          x: "!{table['legThick']/2}"
+          y: "!{table['depth']-table['legThick']/2}"
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+
+      legBR:
+        dimensions:
+          height: "!{table['height'] - table['topThick']}"
+          width: "!{table['legThick']}"
+          depth: "!{table['legThick']}"
+        position:
+          x: "!{table['width']-table['legThick']/2}"
+          y: "!{table['depth']-table['legThick']/2}"
+          z: 0
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+
+      top:
+        dimensions:
+          height: "!{table['topThick']}"
+          width: "!{table['width']}"
+          depth: "!{table['depth']}"
+        position:
+          x: "!{table['width']/2}"
+          y: "!{table['depth']/2}"
+          z: "!{table['height']/2}"
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+
+table:
+  height: 750
+  width: 1200
+  depth: 600
+  topThick: 30
+  legThick: 70
